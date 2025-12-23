@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SDG Mirror Assessment</title>
+
+<style>
+:root{
+  --bg:#e9eef3;
+  --card:#e9eef3;
+  --shadow-light:#ffffff;
+  --shadow-dark:#b8c2cc;
+  --text:#0f172a;
+  --muted:#475569;
+  --accent:#2563eb;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 40px;
+  background:var(--bg);
+}
+
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:600;
+}
+
+.nav-left span{
+  font-size:13px;
+  color:var(--muted);
+  letter-spacing:.5px;
+}
+
+.nav-right a{
+  margin-left:25px;
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:500;
+}
+
+.nav-right button{
+  margin-left:30px;
+  padding:10px 20px;
+  border:none;
+  border-radius:30px;
+  background:var(--bg);
+  box-shadow:6px 6px 12px var(--shadow-dark),
+             -6px -6px 12px var(--shadow-light);
+  cursor:pointer;
+  color:var(--accent);
+  font-weight:600;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:60px 20px 40px;
+}
+
+.hero small{
+  letter-spacing:3px;
+  color:var(--accent);
+  font-weight:600;
+}
+
+.hero h1{
+  font-size:38px;
+  margin:15px 0;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:600px;
+  margin:auto;
+}
+
+/* MAIN CARD */
+.main-card{
+  max-width:1100px;
+  margin:50px auto;
+  padding:40px;
+  border-radius:30px;
+  background:var(--card);
+  box-shadow:20px 20px 40px var(--shadow-dark),
+             -20px -20px 40px var(--shadow-light);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+/* UPLOAD BOX */
+.upload-box{
+  border-radius:25px;
+  background:var(--card);
+  box-shadow:inset 10px 10px 20px var(--shadow-dark),
+             inset -10px -10px 20px var(--shadow-light);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  height:350px;
+  text-align:center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-box:hover{
+  box-shadow:inset 12px 12px 24px var(--shadow-dark),
+             inset -12px -12px 24px var(--shadow-light);
+}
+
+.upload-box input[type="file"]{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.upload-box .icon{
+  width:80px;
+  height:80px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  box-shadow:6px 6px 12px var(--shadow-dark),
+             -6px -6px 12px var(--shadow-light);
+  margin-bottom:20px;
+  font-size:32px;
+  z-index: 5;
+}
+
+.upload-box strong{
+  font-size:18px;
+  z-index: 5;
+}
+
+.upload-box span{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:1px;
+  z-index: 5;
+}
+
+/* Uploaded Image Preview */
+.upload-box img.preview-image{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 25px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.upload-box.has-image .icon,
+.upload-box.has-image strong,
+.upload-box.has-image span {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.upload-box.has-image img.preview-image{
+  opacity: 1;
+}
+
+/* INFO */
+.info h2{
+  font-size:28px;
+  margin-bottom:15px;
+}
+
+.info p{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:30px;
+}
+
+.feature{
+  display:flex;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.feature .dot{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:var(--bg);
+  box-shadow:6px 6px 12px var(--shadow-dark),
+             -6px -6px 12px var(--shadow-light);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  color:var(--accent);
+}
+
+.feature div{
+  font-size:14px;
+}
+
+.feature div strong{
+  display:block;
+  font-size:14px;
+}
+
+.audit-btn{
+  margin-top:25px;
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:30px;
+  background:var(--bg);
+  box-shadow:inset 6px 6px 12px var(--shadow-dark),
+             inset -6px -6px 12px var(--shadow-light);
+  font-weight:600;
+  color:#94a3b8;
+  cursor:not-allowed;
+  transition: all 0.3s ease;
+}
+
+.audit-btn.active{
+  background:var(--accent);
+  color:white;
+  cursor:pointer;
+  box-shadow:inset 6px 6px 12px rgba(0,0,0,0.1),
+             inset -6px -6px 12px rgba(255,255,255,0.8);
+}
+
+/* RESULTS SECTION (Hidden by default) */
+#resultsSection{
+  display:none;
+  max-width:1100px;
+  margin:40px auto;
+  padding:30px;
+  background:white;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+#resultsSection.active{
+  display:block;
+}
+
+.total-score-box{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.total-score-box h2{
+  font-size:24px;
+  margin-bottom:10px;
+}
+
+#totalScoreValue{
+  font-size:60px;
+  font-weight:bold;
+  color:var(--accent);
+}
+
+#objectsList{
+  margin:20px 0;
+}
+
+.object-tag{
+  background:#e2e8f0;
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:12px;
+  margin:4px;
+  display:inline-block;
+}
+
+.sdg-results-container{
+  margin-top:30px;
+}
+
+.sdg-card{
+  background:#f8fafc;
+  border-left:4px solid var(--accent);
+  padding:16px;
+  margin-bottom:20px;
+  border-radius:0 8px 8px 0;
+  box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
+
+.sdg-header{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom:12px;
+}
+
+.sdg-title{
+  font-weight:600;
+  color:var(--text);
+}
+
+.sdg-score{
+  background:var(--accent);
+  color:white;
+  padding:2px 10px;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+.score-breakdown{
+  margin:12px 0;
+}
+
+.score-item{
+  margin:8px 0;
+  font-size:14px;
+}
+
+.score-positive{ color: green; }
+.score-negative{ color: #d32f2f; }
+
+.reasoning{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid #e2e8f0;
+}
+
+.reasoning-title{
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.toggle-transparency{
+  margin-top:10px;
+  padding:6px 12px;
+  background:#e2e8f0;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+.ai-transparency{
+  margin-top:10px;
+  padding:10px;
+  background:#f1f5f9;
+  border-radius:6px;
+  font-family: monospace;
+  font-size:12px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+#error-message{
+  color:red;
+  text-align:center;
+  margin-top:10px;
+  display:none;
+}
+
+#error-message.active{
+  display:block;
+}
+
+#loading{
+  text-align:center;
+  margin:20px 0;
+  display:none;
+}
+
+#loading.active{
+  display:block;
+}
+
+/* RADAR CHART */
+#radarChartContainer{
+  margin:30px 0;
+  text-align:center;
+}
+
+#radarChart{
+  background:white;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .main-card{
+    grid-template-columns:1fr;
+  }
+  .nav-right{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-left">
+    🌐 Project Samudaya
+    <span>VERIFIABLE SDG INTELLIGENCE</span>
+  </div>
+  <div class="nav-right">
+    <a href="#">The Challenge</a>
+    <a href="#">Green Rooms</a>
+    <a href="#">Impact</a>
+    <a href="#">Ethics</a>
+    <button>Launch Mirror</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <small>LIVE PLATFORM</small>
+  <h1>SDG Mirror Assessment</h1>
+  <p>Upload a room image to see how it maps to verifiable SDGs. No assumptions made.</p>
+</section>
+
+<section class="main-card">
+  <div class="upload-box" id="uploadBox">
+    <input type="file" id="fileInput" accept="image/*" />
+    <div class="icon">📷</div>
+    <strong>Snap & Audit Space</strong>
+    <span>KITCHEN, LIVING AREA, OR WORKPLACE</span>
+    <!-- Uploaded image will appear here -->
+  </div>
+
+  <div class="info">
+    <h2>Verifiable SDG Analysis</h2>
+    <p>
+      Our enterprise-grade AI engine evaluates visible indicators—natural lighting,
+      ventilation patterns, material sustainability, and safety infrastructure—and
+      maps them to core SDGs.
+    </p>
+
+    <div class="feature">
+      <div class="dot">✓</div>
+      <div>
+        <strong>No Assumptions</strong>
+        Visible evidence only
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="dot">⛁</div>
+      <div>
+        <strong>Policy-Aligned</strong>
+        Karnataka Vision 2030 ready
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="dot">◉</div>
+      <div>
+        <strong>Auditable Data</strong>
+        Explainable XAI results
+      </div>
+    </div>
+
+    <button id="analyzeBtn" class="audit-btn">Audit Sustainability</button>
+    <div id="error-message"></div>
+  </div>
+</section>
+
+<!-- Loading Indicator -->
+<div id="loading" class="">Analyzing your space... This may take 10-15 seconds.</div>
+
+<!-- Results Section (Initially Hidden) -->
+<section id="resultsSection">
+  <div class="total-score-box">
+    <h2>Your SDG Sustainability Score</h2>
+    <div id="totalScoreValue">0</div>
+    <p>out of 100</p>
+  </div>
+
+  <div id="radarChartContainer">
+    <canvas id="radarChart" width="500" height="500"></canvas>
+  </div>
+
+  <h3>Detected Objects</h3>
+  <div id="objectsList"></div>
+
+  <div class="sdg-results-container">
+    <h3>SDG Breakdown</h3>
+    <div id="sdgResults"></div>
+  </div>
+
+  <button id="resetBtn" style="margin-top:20px; padding:10px 20px; background:var(--accent); color:white; border:none; border-radius:8px; cursor:pointer;">Reset & Analyze Another Room</button>
+</section>
+
+<script>
+    // HARDCODED MISTRAL API KEY (Intentional for transparency)
+    const MISTRAL_API_KEY = '2d3XokspyUcwPAlioHc6x89hifV2z5CW';
+
+    const SDG_CONFIG = {
+        'SDG 3': {
+            name: 'Good Health & Well-Being',
+            color: '#4c9f38',
+            criteria: ['air quality', 'lighting comfort', 'clutter', 'ventilation', 'plants']
+        },
+        'SDG 6': {
+            name: 'Clean Water & Sanitation',
+            color: '#26bde2',
+            criteria: ['water fixtures', 'leaks', 'efficiency', 'taps', 'shower']
+        },
+        'SDG 7': {
+            name: 'Affordable & Clean Energy',
+            color: '#fcc30b',
+            criteria: ['LED lights', 'appliances', 'natural light', 'energy efficiency']
+        },
+        'SDG 10': {
+            name: 'Reduced Inequalities',
+            color: '#dd1367',
+            criteria: ['accessibility', 'inclusive design', 'ease of use', 'safety']
+        },
+        'SDG 11': {
+            name: 'Sustainable Cities & Communities',
+            color: '#fd9d24',
+            criteria: ['space efficiency', 'safety', 'organization', 'ergonomics']
+        },
+        'SDG 12': {
+            name: 'Responsible Consumption',
+            color: '#bf8b2e',
+            criteria: ['reuse', 'waste segregation', 'recycling', 'minimal packaging']
+        },
+        'SDG 13': {
+            name: 'Climate Action',
+            color: '#3f7e44',
+            criteria: ['plants', 'natural ventilation', 'insulation', 'sustainable materials']
+        }
+    };
+
+    let currentImageData = null;
+
+    // DOM Elements
+    const fileInput = document.getElementById('fileInput');
+    const uploadBox = document.getElementById('uploadBox');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const loading = document.getElementById('loading');
+    const resultsSection = document.getElementById('resultsSection');
+    const errorMessage = document.getElementById('error-message');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Event Listeners
+    fileInput.addEventListener('change', handleFileSelect);
+    analyzeBtn.addEventListener('click', analyzeRoom);
+    if (resetBtn) resetBtn.addEventListener('click', resetApplication);
+
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            showError('Please select a valid image file.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            currentImageData = event.target.result;
+
+            // Create preview image element
+            let previewImg = uploadBox.querySelector('.preview-image');
+            if (!previewImg) {
+                previewImg = document.createElement('img');
+                previewImg.className = 'preview-image';
+                uploadBox.appendChild(previewImg);
+            }
+
+            previewImg.src = currentImageData;
+            uploadBox.classList.add('has-image');
+
+            // Enable audit button
+            analyzeBtn.disabled = false;
+            analyzeBtn.classList.add('active');
+            analyzeBtn.style.color = 'white';
+
+            hideError();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function analyzeRoom() {
+        if (!currentImageData) {
+            showError('Please select an image first.');
+            return;
+        }
+
+        loading.classList.add('active');
+        resultsSection.classList.remove('active');
+        analyzeBtn.disabled = true;
+
+        try {
+            const base64Image = currentImageData.split(',')[1]; // Extract base64 data
+
+            const prompt = constructAnalysisPrompt('room'); // Generic room type
+
+            // ✅ FIXED: Use "data:image/jpeg;base64," prefix
+            const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${MISTRAL_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'pixtral-12b-2409',
+                    messages: [
+                        {
+                            role: 'user',
+                            content: [
+                                { type: 'text', text: prompt },
+                                { 
+                                    type: 'image_url', 
+                                    image_url: `data:image/jpeg;base64,${base64Image}` // ✅ CORRECT FORMAT
+                                }
+                            ]
+                        }
+                    ],
+                    max_tokens: 2000
+                })
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(`API Error: ${response.status} – ${errText}`);
+            }
+
+            const data = await response.json();
+            const analysisText = data.choices[0].message.content;
+            displayResults(analysisText, prompt);
+
+        } catch (error) {
+            console.error('Analysis error:', error);
+            showError(`Analysis failed: ${error.message}. Check API key & internet.`);
+        } finally {
+            loading.classList.remove('active');
+            analyzeBtn.disabled = false;
+        }
+    }
+
+    function constructAnalysisPrompt(roomType) {
+        return `You are an expert sustainability auditor analyzing a ${roomType} image against UN Sustainable Development Goals (SDGs).
+
+CRITICAL INSTRUCTIONS:
+1. Analyze the image systematically
+2. Detect specific objects (lights, appliances, furniture, plants, windows, bins, water fixtures, etc.)
+3. Evaluate against these 7 SDGs with specific scoring:
+   - SDG 3 (Health & Well-Being): Air quality, lighting, clutter, ventilation
+   - SDG 6 (Water): Water fixtures, potential leaks, efficiency indicators
+   - SDG 7 (Energy): Lighting type, appliances, natural light usage
+   - SDG 10 (Equity): Accessibility, inclusive design
+   - SDG 11 (Communities): Space efficiency, safety, organization
+   - SDG 12 (Consumption): Reuse evidence, waste management, recycling
+   - SDG 13 (Climate): Plants, natural ventilation, sustainable materials
+
+4. For EACH SDG, provide:
+   - A score from 0-15 points
+   - Specific positive observations (what adds points) — ONLY if visible
+   - Specific negative observations (what deducts points) — BE BRUTALLY HONEST. If something is missing or harmful, say so clearly. Do NOT soften criticism. Example: "No windows → poor ventilation → reduces air quality → -5 points"
+   - Clear reasoning based on visible evidence — explain WHY each positive/negative item affects the score
+
+5. NEVER shame the user. But DO state facts bluntly when sustainability is compromised. Acknowledge resource constraints only AFTER stating the deficiency.
+
+FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS (use this structure):
+
+OBJECTS_DETECTED: [List all visible objects, comma-separated]
+
+SDG_3_SCORE: [number 0-15]
+SDG_3_POSITIVE: [Specific positive observations with point values] — leave blank if none
+SDG_3_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_3_REASONING: [Detailed explanation of scoring — MUST explain both positive and negative deductions]
+
+SDG_6_SCORE: [number 0-15]
+SDG_6_POSITIVE: [Specific positive observations]
+SDG_6_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_6_REASONING: [Detailed explanation]
+
+SDG_7_SCORE: [number 0-15]
+SDG_7_POSITIVE: [Specific positive observations]
+SDG_7_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_7_REASONING: [Detailed explanation]
+
+SDG_10_SCORE: [number 0-15]
+SDG_10_POSITIVE: [Specific positive observations]
+SDG_10_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_10_REASONING: [Detailed explanation]
+
+SDG_11_SCORE: [number 0-15]
+SDG_11_POSITIVE: [Specific positive observations]
+SDG_11_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_11_REASONING: [Detailed explanation]
+
+SDG_12_SCORE: [number 0-15]
+SDG_12_POSITIVE: [Specific positive observations]
+SDG_12_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_12_REASONING: [Detailed explanation]
+
+SDG_13_SCORE: [number 0-15]
+SDG_13_POSITIVE: [Specific positive observations]
+SDG_13_NEGATIVE: [Specific negative observations with point deductions] — MUST include at least one if score < 15
+SDG_13_REASONING: [Detailed explanation]
+
+CONTEXT_NOTE: [Any observations about resource constraints, economic limitations, or positive intent visible despite limitations — only after stating the deficiency]
+
+Be specific, be fair, be transparent — and above all, be brutally honest about what's missing or harmful.`;
+    }
+
+    function displayResults(analysisText, originalPrompt) {
+        const results = parseAnalysisResponse(analysisText);
+        displayDetectedObjects(results.objects);
+        displaySDGResults(results.sdgs, analysisText);
+        const totalScore = calculateTotalScore(results.sdgs);
+        displayTotalScore(totalScore);
+        drawRadarChart(results.sdgs);
+        resultsSection.classList.add('active');
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function parseAnalysisResponse(text) {
+        const results = { objects: [], sdgs: {}, context: '' };
+
+        const objectsMatch = text.match(/OBJECTS_DETECTED:\s*(.+?)(?=\n\n|\nSDG)/s);
+        if (objectsMatch) {
+            results.objects = objectsMatch[1].split(',').map(obj => obj.trim()).filter(obj => obj);
+        }
+
+        const sdgKeys = ['SDG_3', 'SDG_6', 'SDG_7', 'SDG_10', 'SDG_11', 'SDG_12', 'SDG_13'];
+        sdgKeys.forEach(sdgKey => {
+            const scoreMatch = text.match(new RegExp(`${sdgKey}_SCORE:\\s*(\\d+)`));
+            const positiveMatch = text.match(new RegExp(`${sdgKey}_POSITIVE:\\s*(.+?)(?=\\n${sdgKey}_NEGATIVE|\\nSDG)`, 's'));
+            const negativeMatch = text.match(new RegExp(`${sdgKey}_NEGATIVE:\\s*(.+?)(?=\\n${sdgKey}_REASONING|\\nSDG)`, 's'));
+            const reasoningMatch = text.match(new RegExp(`${sdgKey}_REASONING:\\s*(.+?)(?=\\n\\nSDG|\\nCONTEXT|$)`, 's'));
+
+            results.sdgs[sdgKey] = {
+                score: scoreMatch ? parseInt(scoreMatch[1]) : 0,
+                positive: positiveMatch ? positiveMatch[1].trim() : 'No positive observations',
+                negative: negativeMatch ? negativeMatch[1].trim() : 'No negative observations',
+                reasoning: reasoningMatch ? reasoningMatch[1].trim() : 'No detailed reasoning provided'
+            };
+        });
+
+        const contextMatch = text.match(/CONTEXT_NOTE:\s*(.+?)$/s);
+        if (contextMatch) results.context = contextMatch[1].trim();
+        return results;
+    }
+
+    function displayDetectedObjects(objects) {
+        const objectsList = document.getElementById('objectsList');
+        objectsList.innerHTML = '';
+        if (objects.length === 0) {
+            objectsList.innerHTML = '<p style="color: #666;">No specific objects detected.</p>';
+            return;
+        }
+        objects.forEach(obj => {
+            const tag = document.createElement('span');
+            tag.className = 'object-tag';
+            tag.textContent = obj;
+            objectsList.appendChild(tag);
+        });
+    }
+
+    function displaySDGResults(sdgs, fullAnalysis) {
+        const sdgResults = document.getElementById('sdgResults');
+        sdgResults.innerHTML = '';
+
+        const sdgMap = {
+            'SDG_3': 'SDG 3',
+            'SDG_6': 'SDG 6',
+            'SDG_7': 'SDG 7',
+            'SDG_10': 'SDG 10',
+            'SDG_11': 'SDG 11',
+            'SDG_12': 'SDG 12',
+            'SDG_13': 'SDG 13'
+        };
+
+        Object.keys(sdgs).forEach(sdgKey => {
+            const sdg = sdgs[sdgKey];
+            const sdgName = sdgMap[sdgKey];
+            const sdgConfig = SDG_CONFIG[sdgName];
+
+            const card = document.createElement('div');
+            card.className = 'sdg-card';
+            card.style.borderLeftColor = sdgConfig.color;
+
+            card.innerHTML = `
+                <div class="sdg-header">
+                    <div class="sdg-title">${sdgName}: ${sdgConfig.name}</div>
+                    <div class="sdg-score">${sdg.score}/15</div>
+                </div>
+                
+                <div class="score-breakdown">
+                    <h4 style="margin-bottom: 10px; color: #2d5016;">Score Breakdown</h4>
+                    <div class="score-item score-positive">
+                        <strong>✓ Positive:</strong> ${sdg.positive}
+                    </div>
+                    <div class="score-item score-negative">
+                        <strong>✗ Negative:</strong> ${sdg.negative}
+                    </div>
+                </div>
+
+                <div class="reasoning">
+                    <div class="reasoning-title">AI Reasoning</div>
+                    <div>${sdg.reasoning}</div>
+                </div>
+
+                <button class="toggle-transparency" onclick="toggleTransparency('${sdgKey}')">
+                    Show Full AI Response
+                </button>
+                <div id="transparency-${sdgKey}" class="ai-transparency" style="display: none;">
+                    <strong>Full Analysis Text:</strong><br><br>
+                    ${fullAnalysis.replace(/\n/g, '<br>')}
+                </div>
+            `;
+
+            sdgResults.appendChild(card);
+        });
+    }
+
+    window.toggleTransparency = function(sdgKey) {
+        const el = document.getElementById(`transparency-${sdgKey}`);
+        el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    };
+
+    function calculateTotalScore(sdgs) {
+        let total = Object.values(sdgs).reduce((sum, sdg) => sum + sdg.score, 0);
+        return Math.round((total / 105) * 100);
+    }
+
+    function displayTotalScore(score) {
+        const el = document.getElementById('totalScoreValue');
+        let current = 0;
+        const step = score / 50;
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= score) {
+                current = score;
+                clearInterval(timer);
+            }
+            el.textContent = Math.round(current);
+        }, 20);
+    }
+
+    function drawRadarChart(sdgs) {
+        const canvas = document.getElementById('radarChart');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 180;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const scores = ['SDG_3','SDG_6','SDG_7','SDG_10','SDG_11','SDG_12','SDG_13'].map(k => sdgs[k].score);
+        const labels = ['SDG 3', 'SDG 6', 'SDG 7', 'SDG 10', 'SDG 11', 'SDG 12', 'SDG 13'];
+        const numPoints = scores.length;
+        const angleStep = (Math.PI * 2) / numPoints;
+
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 1;
+        for (let i = 1; i <= 5; i++) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, (radius / 5) * i, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < numPoints; i++) {
+            const angle = (angleStep * i) - Math.PI / 2;
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+
+            const labelX = centerX + Math.cos(angle) * (radius + 30);
+            const labelY = centerY + Math.sin(angle) * (radius + 30);
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(labels[i], labelX, labelY);
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(58, 107, 31, 0.3)';
+        ctx.strokeStyle = 'rgba(58, 107, 31, 0.8)';
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < numPoints; i++) {
+            const angle = (angleStep * i) - Math.PI / 2;
+            const norm = (scores[i] / 15) * radius;
+            const x = centerX + Math.cos(angle) * norm;
+            const y = centerY + Math.sin(angle) * norm;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#3a6b1f';
+        for (let i = 0; i < numPoints; i++) {
+            const angle = (angleStep * i) - Math.PI / 2;
+            const norm = (scores[i] / 15) * radius;
+            const x = centerX + Math.cos(angle) * norm;
+            const y = centerY + Math.sin(angle) * norm;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add('active');
+    }
+
+    function hideError() {
+        errorMessage.classList.remove('active');
+    }
+
+    function resetApplication() {
+        currentImageData = null;
+        if (fileInput) fileInput.value = '';
+        
+        // Reset upload box
+        uploadBox.classList.remove('has-image');
+        const previewImg = uploadBox.querySelector('.preview-image');
+        if (previewImg) previewImg.remove();
+
+        // Reset button state
+        analyzeBtn.disabled = true;
+        analyzeBtn.classList.remove('active');
+        analyzeBtn.style.color = '#94a3b8';
+
+        // Hide results
+        resultsSection.classList.remove('active');
+        loading.classList.remove('active');
+        hideError();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize button state
+    analyzeBtn.disabled = true;
+</script>
+
+</body>
+</html>
