@@ -146,11 +146,7 @@ The showcase meeting will also include leadership representatives from **IBM**, 
 This is a proud milestone for you and your family.
 
 **Thanks & Regards,**  
-**Rahul Moorjani**  
 One Million for One Billion (1M1B)  
-📞 +91 910 606 9138  
-LinkedIn
-
 ---
 
 ## Project Status
